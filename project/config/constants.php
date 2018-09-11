@@ -1,3 +1,3 @@
 <?php
 define('DS', DIRECTORY_SEPARATOR);
-define('ROOT_DIR', __DIR__.DS.'..'.DS);
+define('ROOT_DIR', $_SERVER['DOCUMENT_ROOT'].DS.'..'.DS);
