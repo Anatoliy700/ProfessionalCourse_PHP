@@ -12,4 +12,6 @@ interface IModel
   public function getAll(): array;
   
   public function getTableName(): string;
+  
+  public function getWhereColumnName(): string;
 }
