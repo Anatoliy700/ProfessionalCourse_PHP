@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER['DOCUMENT_ROOT'] . '/../config/constants.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/../config/main.php';
 include_once ROOT_DIR . 'services/Autoloader.php';
 spl_autoload_register([(new app\services\Autoloader()), 'loadClass']);
 
