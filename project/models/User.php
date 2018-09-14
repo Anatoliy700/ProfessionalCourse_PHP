@@ -6,12 +6,16 @@ namespace app\models;
 class User extends Model
 {
   public $id;
-  public $name;
+  public $first_name;
+  public $last_name;
   public $login;
   public $password;
   
-  public function getTableName():string {
+  public function getTableName(): string {
     return 'users';
   }
   
+  public function getWhereColumnName(): string {
+    return 'login';
+  }
 }

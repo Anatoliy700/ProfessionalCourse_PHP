@@ -13,4 +13,8 @@ class Car extends Model
   public function getTableName(): string {
     return 'cars';
   }
+  
+  public function getWhereColumnName(): string {
+    return 'id';
+  }
 }
