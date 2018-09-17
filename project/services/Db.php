@@ -59,12 +59,12 @@ class Db
   public function queryAll($sql, $params = [], $className = null) {
     $pdoStatement = $this->query($sql, $params);
     if (!is_null($className)) {
-      $pdoStatement->setFetchMode(\PDO::FETCH_CLASS, $className);
+      $pdoStatement->setFetchMode(\PDO::FETCH_CLASS | \PDO::FETCH_PROPS_LATE, $className);
     }
     return $pdoStatement->fetchAll();
   }
   
-  public function getLastInsertId() {
+  public function lastInsertId() {
     return $this->getConnection()->lastInsertId();
   }
   
