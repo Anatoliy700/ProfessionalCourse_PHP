@@ -3,18 +3,18 @@
 namespace app\models;
 
 
-class Category extends Model
+use app\trains\TSetterGetter;
+
+class Category extends DbModel
 {
-  public $id;
-  public $parent_id;
-  public $title;
-  public $url;
+  use TSetterGetter;
   
-  public function getTableName(): string {
+  protected $id;
+  private $parent_id;
+  private $title;
+  private $url;
+  
+  public static function getTableName(): string {
     return 'categories';
-  }
-  
-  public function getWhereColumnName(): string {
-    return 'id';
   }
 }
