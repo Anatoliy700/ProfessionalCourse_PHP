@@ -1,0 +1,96 @@
+.wrap-products {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.product {
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+.product > a {
+    text-decoration: none;
+    color: #000;
+}
+
+.wrap-cart-products {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.cart-product {
+    display: flex;
+    border: 1px solid black;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.cart-product > div,
+.cart-product > form,
+.cart-product > h3 {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+}
+
+input[type=number] {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.wrap-reg form,
+.wrap-login_block form,
+.admin_product-add{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.wrap-reg form > input,
+.wrap-login_block form > input,
+.admin_product-add > input,
+.admin_product-add > textarea{
+    margin-bottom: 5px;
+}
+
+.wrap-reg form > input:valid,
+.wrap-login_block form > input:valid{
+    outline-color: green;
+}
+
+.wrap-reg form > input:invalid,
+.wrap-login_block form > input:invalid {
+    outline-color: red;
+}
+
+.orders-lk,
+.orders-adm{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.order-lk,
+.order-adm{
+    display: flex;
+    margin-bottom: 20px;
+    border: 1px solid black;
+    /*align-items: flex-start;*/
+}
+
+.order-lk > div,
+.order-adm > div{
+    margin: 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.order-lk p,
+.order-adm p{
+    text-align: center;
+    margin: 10px;
+}
