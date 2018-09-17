@@ -3,19 +3,36 @@
 namespace app\models;
 
 
-class User extends Model
+use app\trains\TSetterGetter;
+
+class User extends DbModel
 {
-  public $id;
-  public $first_name;
-  public $last_name;
-  public $login;
-  public $password;
+  use TSetterGetter;
   
-  public function getTableName(): string {
-    return 'users';
+  protected $id;
+  private $first_name;
+  private $last_name;
+  private $login;
+  private $password;
+  
+  /**
+   * User constructor.
+   * @param $first_name
+   * @param $last_name
+   * @param $login
+   * @param $password
+   */
+  public function __construct($first_name = null, $last_name = null, $login = null, $password = null) {
+    parent::__construct();
+    $this->first_name = $first_name;
+    $this->last_name = $last_name;
+    $this->login = $login;
+    $this->password = $password;
   }
   
-  public function getWhereColumnName(): string {
-    return 'login';
+  
+  
+  public static function getTableName(): string {
+    return 'users';
   }
 }
