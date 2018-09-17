@@ -3,19 +3,19 @@
 namespace app\models;
 
 
-class Order extends Model
+use app\trains\TSetterGetter;
+
+class Order extends DbModel
 {
-  public $id;
-  public $user_id;
-  public $products; //[[id, amount],[]]
-  public $totalAmount;
-  public $total_price;
+  use TSetterGetter;
   
-  public function getTableName(): string {
+  protected $id;
+  private $user_id;
+  private $products; //[[id, amount],[]]
+  private $totalAmount;
+  private $total_price;
+  
+  public static function getTableName(): string {
     return 'orders';
-  }
-  
-  public function getWhereColumnName(): string {
-    return 'id';
   }
 }
