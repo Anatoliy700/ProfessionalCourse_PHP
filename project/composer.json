@@ -1,0 +1,20 @@
+{
+  "name": "anatoliy/project",
+  "authors": [
+    {
+      "name": "Anatoliy",
+      "email": "anatoliy.rus@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "app\\": ""
+    },
+    "psr-4": {
+      "app\\": ""
+    }
+  },
+  "require": {
+    "twig/twig": "^2.0"
+  }
+}
