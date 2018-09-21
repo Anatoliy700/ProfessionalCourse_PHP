@@ -11,8 +11,10 @@ class ProductController extends Controller
    *
    */
   public function actionIndex() {
+//    $this->useLayout = false;
     $product = Product::getAll();
-    echo $this->render('catalog', ['products' => $product]);
+//    echo $this->render('catalog', ['products' => $product]);
+    echo $this->render('twig_catalog.html', ['products' => $product]);
   }
   
   /**
@@ -23,8 +25,8 @@ class ProductController extends Controller
     if ($_GET['id']) {
       $id = $_GET['id'];
       $product = Product::getOne($id);
-      echo $this->render('card', ['product' => $product]);
-    }else{
+      echo $this->render('twig_card.html', ['product' => $product]);
+    } else {
       Redirect::go();
     }
   }
