@@ -34,9 +34,9 @@ abstract class DbModel implements IDbModel
    * @param $name
    * @return mixed
    */
-//  public function getProp($name) {
-//    return $this->$name;
-//  }
+  public function getProp($name) {
+    return $this->$name;
+  }
   
   
   /**
