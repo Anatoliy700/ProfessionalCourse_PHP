@@ -18,7 +18,7 @@ class CartController extends Controller
     if ($session->isProducts()) {
       $cart = new Cart($session->cart['products']);
     }
-    echo $this->render('twig_cart.html', ['cart' => $cart]);
+    echo $this->render('cart', ['cart' => $cart]);
   }
   
   /**
