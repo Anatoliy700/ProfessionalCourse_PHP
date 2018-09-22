@@ -9,7 +9,7 @@ abstract class Controller
 {
   private $action;
   private $defaultAction = 'index';
-  protected $layout = 'twig_main.html';
+  protected $layout = 'main';
   protected $useLayout = true;
   private $renderer;
   
@@ -17,7 +17,7 @@ abstract class Controller
    * Controller constructor.
    * @param $renderer
    */
-  public function __construct(\Twig_Environment $renderer) {
+  public function __construct(IRenderer $renderer) {
     $this->renderer = $renderer;
   }
   
@@ -34,10 +34,8 @@ abstract class Controller
   
   public function render($template, $params = []) {
     if ($this->useLayout) {
-//      $content = $this->renderTemplate($template, $params);
-//      return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
-      $params["template"] = $template;
-      return $this->renderTemplate("@layouts/{$this->layout}", $params);
+      $content = $this->renderTemplate($template, $params);
+      return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
     }
     return $this->renderTemplate($template, $params);
   }
