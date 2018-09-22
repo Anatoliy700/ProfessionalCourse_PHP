@@ -6,9 +6,9 @@
         <div class="cart-product">
           <h3><?= $product['details']->title ?></h3>
           <div>
-            <img src="img/min/<?= $product['details']->path ?>.jpg" alt="<?= $product['details']->path ?>">
+            <img src="/img/min/<?= $product['details']->path ?>.jpg" alt="<?= $product['details']->path ?>">
           </div>
-          <form id="cart_<?= $product['id'] ?>" action="/?c=cart&a=update" method="post">
+          <form id="cart_<?= $product['id'] ?>" action="/cart/update" method="post">
             <input type="hidden" name="id" value="<?= $product['id'] ?>">
             <input type="number" name="amount" min="1" value="<?= $product['amount'] ?>" required>
             <input type="submit" value="Изменить количество">
@@ -16,7 +16,7 @@
           <div class="cart-product-total-price">
             Стоимость: <?= $product['amount'] * $product['details']->price ?> руб.
           </div>
-          <input form="cart_<?= $product['id'] ?>" formaction="/?c=cart&a=remove" type="submit" value="Удалить товар">
+          <input form="cart_<?= $product['id'] ?>" formaction="/cart/remove" type="submit" value="Удалить товар">
         </div>
       <?php endforeach; ?>
       <p>Общая стоимость: <?= $cart->totalPrice ?> руб.</p>

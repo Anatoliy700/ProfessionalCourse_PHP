@@ -3,7 +3,7 @@
 <div class="wrap-products">
   <?php foreach ($products as $product): ?>
     <div class="product">
-      <a href="?a=card&id=<?= $product->id ?>">
+      <a href="/product/card?id=<?= $product->id ?>">
         <div>
           <h3><?= $product->title ?></h3>
           <img src="/img/min/<?= $product->path ?>.jpg" alt="<?= $product->path ?>">
