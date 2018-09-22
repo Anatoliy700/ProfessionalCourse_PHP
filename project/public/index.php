@@ -6,25 +6,14 @@ require_once ROOT_DIR . '/vendor/autoload.php';
 
 session_start();
 
-$controllerName = $_GET['c'] ?: DEFAULT_CONTROLLER;
-$action = $_GET['a'];
+$request = new \app\services\Request();
+
+$controllerName = $request->getControllerName() ?: DEFAULT_CONTROLLER;
+$action = $request->getActionName();
 
 $controllerClass = CONTROLLERS_NAMESPACE . "\\" . ucfirst($controllerName) . "Controller";
 
-$loader = new Twig_Loader_Filesystem(TEMPLATES_DIR);
-$loader->addPath(TEMPLATES_DIR . 'layouts/', 'layouts');
-$twig = new Twig_Environment($loader);
 if (class_exists($controllerClass)) {
-  $controller = new $controllerClass($twig);
+  $controller = new $controllerClass(new \app\services\TemplateRenderer());
   $controller->run($action);
 }
-
-
-//$user = new app\models\User('first','last', 'log2', '1111');
-//$user = \app\models\User::getOne(64);
-//$user->last_name = 'new last';
-//var_dump($user->first_name = 111);
-//var_dump($user->updateProp);
-//$user->save();
-
-//var_dump(\app\models\Product::getOne(5));
