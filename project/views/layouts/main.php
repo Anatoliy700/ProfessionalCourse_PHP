@@ -13,8 +13,8 @@
 </head>
 <body>
 <p>
-  <a href="/?c=product&a=index">Каталог</a>&nbsp;&nbsp;
-   <a href="/?c=cart&a=index">Корзина</a>&nbsp;&nbsp;
+  <a href="/product">Каталог</a>&nbsp;&nbsp;
+   <a href="/cart">Корзина</a>&nbsp;&nbsp;
   <!--<a href="/lk">Личный кабинет</a>&nbsp;&nbsp;
   <?php /*if (isAdmin()): */?>
     <?/*= $options['admin']; */?>&nbsp;&nbsp;
