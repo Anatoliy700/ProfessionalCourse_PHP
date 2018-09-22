@@ -1,0 +1,15 @@
+<h2>Товары</h2>
+<div class="wrap-products">
+  {% for product in products %}
+    <div class="product">
+      <a href="/product/card?id={{ product.getProp('id') }}">
+        <div>
+          <h3>{{ product.getProp('title') }}</h3>
+          <img src="/img/min/{{ product.getProp('path') }}.jpg" alt="{{ product.getProp('path') }}">
+          <p>{{ product.getProp('description') }}</p>
+          <p>Стоимость: {{ product.getProp('price') }} руб.</p>
+        </div>
+      </a>
+    </div>
+  {% endfor %}
+</div>

@@ -1,9 +1,9 @@
 <div class="wrap-product">
   <h2>{{ product.getProp('title') }}</h2>
-  <img src="img/{{ product.getProp('path') }}.jpg" alt="{{ product.getProp('path') }}">
+  <img src="/img/{{ product.getProp('path') }}.jpg" alt="{{ product.getProp('path') }}">
   <p>{{ product.getProp('description') }}</p>
   <p>Стоимость: {{ product.getProp('price') }} руб.</p>
-  <form action="/?c=cart&a=add" method="post">
+  <form action="/cart/add" method="post">
     <input type="hidden" name="type" value="add">
     <input type="hidden" name="id" value="{{ product.getProp('id') }}">
     <input type="number" name="amount" placeholder="Количество" min="1" value="1" required>
