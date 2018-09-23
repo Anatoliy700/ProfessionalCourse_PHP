@@ -3,9 +3,9 @@
 namespace app\controllers;
 
 
-use app\models\Cart;
+use app\models\entities\Cart;
+use app\models\repositories\CartRepository;
 use app\services\Redirect;
-use app\services\Session;
 
 class CartController extends Controller
 {
@@ -13,38 +13,38 @@ class CartController extends Controller
    *
    */
   public function actionIndex() {
-    $cart = null;
-    $session = new Session();
-    if ($session->isProducts()) {
-      $cart = new Cart($session->cart['products']);
-    }
-    echo $this->render('cart', ['cart' => $cart]);
+    $cart = (new CartRepository())->getOne(1);
+    echo $this->render('cart', ['cart' => count($cart->getProp('products')) ? $cart : null]);
   }
   
   /**
    *
    */
   public function actionAdd() {
-    $this->addToCart(Session::ADD);
+    $this->addToCart(Cart::ADD);
+    Redirect::go();
   }
   
   /**
    *
    */
   public function actionUpdate() {
-    $this->addToCart(Session::UPDATE);
+    $this->addToCart(Cart::UPDATE);
+    Redirect::go();
   }
+  
+  //TODO убрать дублирование, подумать над оптимизацией
   
   /**
    *
    */
   public function actionRemove() {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['id']) {
-      $product_id = (int)$_POST['id'];
-      if ($product_id) {
-        $session = new Session();
-        $session->removeFromCart($product_id);
-      }
+    $params = $this->request->getPostParams();
+    if (isset($params['id'])) {
+      $cartRepository = new CartRepository();
+      $cart = $cartRepository->getOne(1);
+      $cart->remove($params);
+      $cartRepository->save($cart);
     }
     Redirect::go();
   }
@@ -53,15 +53,12 @@ class CartController extends Controller
    * @param $type
    */
   private function addToCart($type) {
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['id']) {
-      
-      $product_id = (int)$_POST['id'];
-      $product_amount = (int)$_POST['amount'] ?? 1;
-      if ($product_id && $product_amount) {
-        $session = new Session();
-        $session->addToCart($product_id, $product_amount, $type);
-      }
+    $params = $this->request->getPostParams();
+    if (isset($params['id'])) {
+      $cartRepository = new CartRepository();
+      $cart = $cartRepository->getOne(1);
+      $cart->add($params, $type);
+      $cartRepository->save($cart);
     }
-    Redirect::go();
   }
 }
