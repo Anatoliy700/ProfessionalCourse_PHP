@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
 
 use app\trains\TSetterGetter;
 
-class Product extends DbModel
+class Product extends DataEntity
 {
   use TSetterGetter;
   
@@ -27,16 +27,11 @@ class Product extends DbModel
    * @param $path
    */
   public function __construct($name = null, $description = null, $price = null, $producer = null, $category_id = null, $path = null) {
-    parent::__construct();
     $this->title = $name;
     $this->description = $description;
     $this->price = $price;
     $this->producer = $producer;
     $this->category_id = $category_id;
     $this->path = $path;
-  }
-  
-  public static function getTableName(): string {
-    return 'products';
   }
 }
