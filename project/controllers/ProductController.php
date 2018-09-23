@@ -2,9 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\Product;
+use app\models\repositories\ProductRepository;
 use app\services\Redirect;
 
+/**
+ * Class ProductController
+ * @package app\controllers
+ */
 class ProductController extends Controller
 {
   /**
@@ -12,8 +16,8 @@ class ProductController extends Controller
    */
   public function actionIndex() {
 //    $this->useLayout = false;
-    $product = Product::getAll();
-    echo $this->render('catalog', ['products' => $product]);
+    $products = (new ProductRepository())->getAll();
+    echo $this->render('catalog', ['products' => $products]);
   }
   
   /**
@@ -23,7 +27,7 @@ class ProductController extends Controller
 //    $this->useLayout = false;
     if ($_GET['id']) {
       $id = $_GET['id'];
-      $product = Product::getOne($id);
+      $product = (new ProductRepository())->getOne($id);
       echo $this->render('card', ['product' => $product]);
     } else {
       Redirect::go();
