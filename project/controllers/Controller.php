@@ -4,6 +4,7 @@ namespace app\controllers;
 
 
 use app\interfaces\IRenderer;
+use app\services\Request;
 
 abstract class Controller
 {
@@ -12,13 +13,16 @@ abstract class Controller
   protected $layout = 'main';
   protected $useLayout = true;
   private $renderer;
+  protected $request;
   
   /**
    * Controller constructor.
-   * @param $renderer
+   * @param IRenderer $renderer
+   * @param Request $request
    */
-  public function __construct(IRenderer $renderer) {
+  public function __construct(IRenderer $renderer, Request $request) {
     $this->renderer = $renderer;
+    $this->request = $request;
   }
   
   
