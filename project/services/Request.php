@@ -14,6 +14,7 @@ class Request
   private $controllerName;
   private $actionName;
   private $params;
+  private $postParams;
   private $requestString;
   
   /**
@@ -22,6 +23,7 @@ class Request
   public function __construct() {
     $this->requestString = $_SERVER['REQUEST_URI'];
     $this->parseRequest();
+    $this->getPost();
   }
   
   private function parseRequest() {
@@ -31,8 +33,12 @@ class Request
       $this->actionName = $matches['action'][0];
       $this->params = $matches['params'][0];
     }
-    
-    
+  }
+  
+  private function getPost() {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      $this->postParams = $_POST;
+    }
   }
   
   /**
@@ -56,5 +62,10 @@ class Request
     return $this->params;
   }
   
-  
+  /**
+   * @return mixed
+   */
+  public function getPostParams() {
+    return $this->postParams;
+  }
 }
