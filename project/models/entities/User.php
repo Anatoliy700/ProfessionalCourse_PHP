@@ -1,11 +1,11 @@
 <?php
 
-namespace app\models;
+namespace app\models\entities;
 
 
 use app\trains\TSetterGetter;
 
-class User extends DbModel
+class User extends DataEntity
 {
   use TSetterGetter;
   
@@ -23,16 +23,9 @@ class User extends DbModel
    * @param $password
    */
   public function __construct($first_name = null, $last_name = null, $login = null, $password = null) {
-    parent::__construct();
     $this->first_name = $first_name;
     $this->last_name = $last_name;
     $this->login = $login;
     $this->password = $password;
-  }
-  
-  
-  
-  public static function getTableName(): string {
-    return 'users';
   }
 }
