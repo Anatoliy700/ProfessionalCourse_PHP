@@ -28,4 +28,15 @@ class User extends DataEntity
     $this->login = $login;
     $this->password = $password;
   }
+  
+  public function toArray(): array {
+    return [
+      'id' => $this->id,
+      'first_name' => $this->first_name,
+      'last_name' => $this->last_name,
+      'login' => $this->login
+    ];
+  }
+  
+  
 }
