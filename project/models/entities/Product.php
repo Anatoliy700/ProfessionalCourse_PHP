@@ -34,4 +34,21 @@ class Product extends DataEntity
     $this->category_id = $category_id;
     $this->path = $path;
   }
+  
+  /**
+   * @return array
+   */
+  public function toArray(): array {
+    return [
+      'id' => $this->id,
+      'title' => $this->title,
+      'description' => $this->description,
+      'price' => $this->price,
+      'producer' => $this->producer,
+      'category_id' => $this->category_id,
+      'path' => $this->path
+    ];
+  }
+  
+  
 }
