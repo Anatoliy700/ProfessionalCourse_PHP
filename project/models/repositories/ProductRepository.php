@@ -16,4 +16,14 @@ class ProductRepository extends Repository
     return Product::class;
   }
   
+  public function getProductsPrice(array $idArr){
+    $placeholder = [];
+    foreach ($idArr as $id){
+      $placeholder[] = '?';
+    }
+    $placeholder = implode(', ', $placeholder);
+    $sql = "SELECT id AS product_id, price FROM {$this->getTableName()} WHERE id IN ({$placeholder})";
+    return $this->db->queryAll($sql, $idArr);
+  }
+  
 }
