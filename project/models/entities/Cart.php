@@ -3,7 +3,6 @@
 namespace app\models\entities;
 
 
-use app\models\repositories\ProductRepository;
 use app\trains\TSetterGetter;
 
 class Cart extends DataEntity
@@ -13,46 +12,30 @@ class Cart extends DataEntity
   const ADD = false;
   const UPDATE = true;
   protected $id;
-  private $products = []; //[[id, amount],[]]
-  private $totalPrice = 0;
-  private $totalAmount = 0;
+  private $products = []; //[[product_id, amount],[]]
+  private $total_price = 0;
+  private $total_amount = 0;
   
   /**
    * Cart constructor.
    * @param null $data []
    */
   public function __construct($data = null) {
-    $this->products = $data['products'];
-//    $this->totalPrice = $data['totalPrice'];
-//    $this->totalAmount = $data['totalAmount'];
-    $this->getData();
-  }
-  
-  private function getData() {
-    if (count($this->products)) {
-      $arrId = [];
-      foreach ($this->products as $product) {
-        if ($product['id'] !== null) {
-          $arrId[] = $product['id'];
-        }
-      }
-      $products = (new ProductRepository())->getSelect($arrId);
-      
-      foreach ($this->products as &$cartItem) {
-        foreach ($products as $product) {
-          if ($product->id == $cartItem['id']) {
-            $cartItem['details'] = $product;
-            $this->totalPrice += $cartItem['amount'] * $product->price;
-            $this->totalAmount += $cartItem['amount'];
-          }
-        }
-      }
+    if (!empty($data)) {
+      $this->products = $data['products'];
+      $this->total_price = $data['total_price'];
+      $this->total_amount = $data['total_amount'];
     }
   }
   
+  /**
+   * @param $params
+   * @param $type
+   */
   public function add($params, $type) {
     $id = (int)$params['id'];
     $amount = (int)$params['amount'];
+    $price = (int)$params['price'];
     
     if ($id && $amount) {
       $arrKey = false;
@@ -60,7 +43,7 @@ class Cart extends DataEntity
       if ($this->products) {
         foreach ($this->products as $key => $item) {
           //проверяем нет ли уже добавляемого товара в карзине и если есть то только увеличиваем количество
-          if ($item['id'] == $id) {
+          if ($item['product_id'] == $id) {
             $arrKey = $key;
             break;
           }
@@ -76,26 +59,45 @@ class Cart extends DataEntity
         }
         //если добавляемые товар не присутсвует в карзине
       } else {
-        $this->products[] = ['id' => $id, 'amount' => $amount];
+        $this->products[] = ['product_id' => $id, 'amount' => $amount, 'price' => $price];
       }
     }
   }
   
-  public function remove($params){
+  /**
+   * @param $params
+   */
+  public function remove($params) {
     $id = (int)$params['id'];
     foreach ($this->products as $key => $item) {
-      if ($item['id'] === $id) {
+      if ($item['product_id'] === $id) {
         array_splice($this->products, $key, 1);
         break;
       }
     }
   }
   
+  /**
+   * @return array
+   */
+  public function getProductsId() {
+    $productsId = [];
+    if (!empty($this->products)) {
+      foreach ($this->products as $product) {
+        $productsId[] = $product['product_id'];
+      }
+    }
+    return $productsId;
+  }
+  
+  /**
+   * @return array
+   */
   public function toArray(): array {
     return [
       'products' => $this->products,
-      'totalPrice' => $this->totalPrice,
-      'totalAmount' => $this->totalAmount
+      'total_price' => $this->total_price,
+      'total_amount' => $this->total_amount
     ];
   }
   
