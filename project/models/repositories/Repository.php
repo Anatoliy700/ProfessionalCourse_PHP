@@ -60,14 +60,12 @@ abstract class Repository
     return $this->db->queryAll($sql, $arrId, $this->getEntityClass());
   }
   
-  private function insert(DataEntity $entity) {
+  protected function insert(DataEntity $entity) {
     $params = [];
     $columns = [];
     
     $reflect = new \ReflectionClass($entity);
     $props = $reflect->getProperties(\ReflectionProperty::IS_PRIVATE);
-    
-    var_dump($props);
     
     foreach ($props as $key => $value) {
       /**TODO решшить проблемы со служебнными полями */
@@ -75,7 +73,6 @@ abstract class Repository
       $params[":{$value->getName()}"] = $value->getValue($entity);
       $columns[] = "`{$value->getName()}`";
     }
-    var_dump($params, $columns);
     $columns = implode(", ", $columns);
     $placeholders = implode(", ", array_keys($params));
     $tableName = $this->getTableName();
@@ -86,14 +83,15 @@ abstract class Repository
       throw new RepositoryException('Ошибка: ' . $pdoStatement->errorInfo()[2]);
     } else {
       if ($pdoStatement->rowCount()) {
-        $this->id = $this->db->lastInsertId();
+        //TODO доработать добавление id
+        $entity->setId($this->db->lastInsertId());
       } else {
         throw new RepositoryException('Ошибка: не добавлено');
       }
     }
   }
   
-  private function update(DataEntity $entity) {
+  protected function update(DataEntity $entity) {
     $params = [];
     $columns = [];
     
@@ -104,7 +102,6 @@ abstract class Repository
         $columns[] = "`{$propName}` = :{$propName}";
       }
       $params[":id"] = $entity->id;
-      var_dump($params, $columns);
       $placeholders = implode(", ", $columns);
       $tableName = $this->getTableName();
       
@@ -126,12 +123,11 @@ abstract class Repository
     $pdoStatement = $this->db->execute($sql, [":id" => $entity->id]);
     
     if ((int)$pdoStatement->errorCode()) {
-      echo 'Ошибка: ', $pdoStatement->errorInfo()[2];
+      throw new RepositoryException('Ошибка: ' . $pdoStatement->errorInfo()[2]);
     } else {
       if ($pdoStatement->rowCount()) {
-        echo 'Успешно';
       } else {
-        echo 'Ошибка';
+        throw new RepositoryException('Ошибка: не удалено');
       }
     }
   }
