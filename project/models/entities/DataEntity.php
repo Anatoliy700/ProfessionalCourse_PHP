@@ -14,6 +14,15 @@ abstract class DataEntity
     return $this->updateProp;
   }
   
+  /**
+   * @param $id
+   */
+  public function setId($id){
+    if((int)$id){
+      $this->id = $id;
+    }
+    
+  }
   
   
   /**
@@ -24,4 +33,8 @@ abstract class DataEntity
     return $this->$name;
   }
   
+  /**
+   * @return array
+   */
+  abstract public function toArray(): array ;
 }
