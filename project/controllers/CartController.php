@@ -5,6 +5,7 @@ namespace app\controllers;
 
 use app\models\entities\Cart;
 use app\models\repositories\CartRepository;
+use app\models\repositories\ProductRepository;
 use app\services\Redirect;
 
 class CartController extends Controller
@@ -13,8 +14,24 @@ class CartController extends Controller
    *
    */
   public function actionIndex() {
-    $cart = (new CartRepository())->getOne(1);
-    echo $this->render('cart', ['cart' => count($cart->getProp('products')) ? $cart : null]);
+    $user_id = 1; //получаем id пользователя, он равен id корзины
+    $cart = (new CartRepository())->getOne($user_id);
+    $products_id = $cart->getProductsId();
+    $cartArray = $cart->toArray();
+    if (!empty($products_id)) {
+      $products = (new ProductRepository())->getSelect($products_id);
+      foreach ($cartArray['products'] as &$productsItem) {
+        foreach ($products as $product) {
+          $product = $product->toArray();
+          if ($product['id'] == $productsItem['product_id']) {
+            $productsItem['details'] = $product;
+            $cartArray['totalPrice'] += $productsItem['amount'] * $product['price'];
+            $cartArray['totalAmount'] += $productsItem['amount'];
+          }
+        }
+      }
+    }
+    echo $this->render('cart', ['cart' => count($cartArray['products']) ? $cartArray : null]);
   }
   
   /**
