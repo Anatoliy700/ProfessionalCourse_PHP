@@ -39,6 +39,7 @@ class CartRepository extends Repository
   }
   
   public function delete(DataEntity $entity) {
+    $this->ss->save(null);
   }
   
   public function save(DataEntity $entity) {
