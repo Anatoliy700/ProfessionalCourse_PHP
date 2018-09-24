@@ -64,6 +64,14 @@ class Db
     return $pdoStatement->fetchAll();
   }
   
+  public function beginTransaction() {
+    $this->conn->beginTransaction();
+  }
+  
+  public function commit() {
+    $this->conn->commit();
+  }
+  
   public function lastInsertId() {
     return $this->getConnection()->lastInsertId();
   }

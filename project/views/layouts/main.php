@@ -15,6 +15,7 @@
 <p>
   <a href="/product">Каталог</a>&nbsp;&nbsp;
    <a href="/cart">Корзина</a>&nbsp;&nbsp;
+   <a href="/order">Заказы</a>&nbsp;&nbsp;
   <!--<a href="/lk">Личный кабинет</a>&nbsp;&nbsp;
   <?php /*if (isAdmin()): */?>
     <?/*= $options['admin']; */?>&nbsp;&nbsp;
