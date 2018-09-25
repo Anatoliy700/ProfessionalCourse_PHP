@@ -59,7 +59,8 @@ class Request
    * @return mixed
    */
   public function getParams() {
-    return $this->params;
+    parse_str($this->params, $params);
+    return $params;
   }
   
   /**
