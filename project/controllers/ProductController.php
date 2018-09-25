@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\repositories\ProductRepository;
+use app\services\exception\RepositoryException;
 use app\services\Redirect;
 
 /**
@@ -27,8 +28,12 @@ class ProductController extends Controller
 //    $this->useLayout = false;
     if ($_GET['id']) {
       $id = $_GET['id'];
-      $product = (new ProductRepository())->getOne($id);
-      echo $this->render('card', ['product' => $product]);
+      try {
+        $product = (new ProductRepository())->getOne($id);
+        echo $this->render('card', ['product' => $product]);
+      } catch (RepositoryException $e) {
+        echo $this->render('404', ['message' => $e->getMessage()]);
+      }
     } else {
       Redirect::go();
     }
