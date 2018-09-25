@@ -4,6 +4,7 @@ namespace app\controllers;
 
 
 use app\interfaces\IRenderer;
+use app\services\exception\ControllerException;
 use app\services\Request;
 
 abstract class Controller
@@ -32,20 +33,16 @@ abstract class Controller
     if (method_exists($this, $method)) {
       $this->$method();
     } else {
-      echo "404";
+     throw new ControllerException('Запрашиваемая страница не найдена');
     }
   }
   
   public function render($template, $params = []) {
-    if ($this->useLayout) {
-      $content = $this->renderTemplate($template, $params);
-      return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
-    }
-    return $this->renderTemplate($template, $params);
+    return $this->renderer->render($template, $params, $this->useLayout);
   }
   
   
-  public function renderTemplate($template, $params = []) {
-    return $this->renderer->render($template, $params);
-  }
+//  public function renderTemplate($template, $params = []) {
+//    return $this->renderer->render($template, $params);
+//  }
 }
