@@ -5,11 +5,11 @@ namespace app\models\repositories;
 
 
 use app\models\entities\DataEntity;
+use app\models\entities\Product;
 use app\services\Db;
+use app\services\exception\ControllerException;
+use app\services\exception\RepositoryException;
 
-class RepositoryException extends \Exception
-{
-}
 
 abstract class Repository
 {
@@ -31,7 +31,14 @@ abstract class Repository
   public function getOne(int $id): DataEntity {
     $tableName = $this->getTableName();
     $sql = "SELECT * FROM {$tableName} WHERE id = :id";
-    return $this->db->queryOne($sql, [':id' => $id], $this->getEntityClass());
+    $response = $this->db->queryOne($sql, [':id' => $id], $this->getEntityClass());
+    if ($response instanceof DataEntity) {
+      return $response;
+    } elseif ($this->getEntityClass() == Product::class) {
+      throw new RepositoryException('Продукт не найден');
+    } else {
+      throw new \Exception();
+    }
   }
   
   /**
