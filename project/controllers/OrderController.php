@@ -7,6 +7,7 @@ use app\models\entities\Order;
 use app\models\repositories\CartRepository;
 use app\models\repositories\OrderRepository;
 use app\models\repositories\ProductRepository;
+use app\services\exception\RepositoryException;
 use app\services\Redirect;
 
 class OrderController extends Controller
@@ -31,24 +32,28 @@ class OrderController extends Controller
   }
   
   protected function actionDetails() {
-    $params = $this->request->getPostParams();
-    if (!empty($params['id'])) {
-      $orderRepository = new OrderRepository();
-      $order = $orderRepository->getOne($params['id']);
-      $products_id = $order->getProductsId();
-      $products = (new ProductRepository())->getSelect($products_id);
-      $orderArray = $order->toArray();
-      foreach ($orderArray['products'] as &$productsItem) {
-        foreach ($products as $product) {
-          $product = $product->toArray();
-          if ($product['id'] == $productsItem['product_id']) {
-            $productsItem['details'] = $product;
+    $id = $this->request->getParams('id');
+    if ($this->request->isGet() && $id) {
+      try {
+        $orderRepository = new OrderRepository();
+        $order = $orderRepository->getOne($id);
+        $products_id = $order->getProductsId();
+        $products = (new ProductRepository())->getSelect($products_id);
+        $orderArray = $order->toArray();
+        foreach ($orderArray['products'] as &$productsItem) {
+          foreach ($products as $product) {
+            $product = $product->toArray();
+            if ($product['id'] == $productsItem['product_id']) {
+              $productsItem['details'] = $product;
 //            $orderArray['total_price'] += $productsItem['amount'] * $product['price'];
 //            $orderArray['total_amount'] += $productsItem['amount'];
+            }
           }
         }
+        echo $this->render('orderDetails', ['order' => $orderArray]);
+      } catch (RepositoryException $e) {
+        echo $this->render('404', ['message' => $e->getMessage()]);
       }
-      echo $this->render('orderDetails', ['order' => $orderArray]);
     } else {
       Redirect::go();
     }
@@ -56,10 +61,10 @@ class OrderController extends Controller
   
   //TODO может промто передавать id без получения объекта
   protected function actionDelete() {
-    $params = $this->request->getPostParams();
-    if (!empty($params['id'])) {
+    $id = $this->request->getParams('id');
+    if ($this->request->isPost() && $id) {
       $orderRepository = new OrderRepository();
-      $order = $orderRepository->getOne($params['id']);
+      $order = $orderRepository->getOne($id);
       $orderRepository->delete($order);
     }
     Redirect::go();
