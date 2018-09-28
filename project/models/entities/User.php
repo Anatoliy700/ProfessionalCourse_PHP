@@ -17,16 +17,23 @@ class User extends DataEntity
   
   /**
    * User constructor.
+   * @param $id
    * @param $first_name
    * @param $last_name
    * @param $login
    * @param $password
    */
-  public function __construct($first_name = null, $last_name = null, $login = null, $password = null) {
+  public function __construct($id = null, $first_name = null, $last_name = null, $login = null, $password = null) {
+    $this->id = $id;
     $this->first_name = $first_name;
     $this->last_name = $last_name;
     $this->login = $login;
     $this->password = $password;
+  }
+  
+  
+  public function checkPassword($pass){
+    return password_verify($pass, $this->password);
   }
   
   public function toArray(): array {
