@@ -26,10 +26,10 @@ class ProductController extends Controller
    */
   public function actionCard() {
 //    $this->useLayout = false;
-    $params = $this->request->getParams();
-    if (!empty($params['id'])) {
+    $id = $this->request->getParams('id');
+    if ($this->request->isGet() && $id) {
       try {
-        $product = (new ProductRepository())->getOne($params['id']);
+        $product = (new ProductRepository())->getOne($id);
         echo $this->render('card', ['product' => $product]);
       } catch (RepositoryException $e) {
         echo $this->render('404', ['message' => $e->getMessage()]);
