@@ -5,6 +5,7 @@ namespace app\models\repositories;
 
 use app\models\entities\DataEntity;
 use app\models\entities\Order;
+use app\services\exception\RepositoryException;
 
 class OrderRepository extends Repository
 {
@@ -27,8 +28,15 @@ class OrderRepository extends Repository
             LEFT JOIN order_statuses AS s ON s.id = o.status_id
             WHERE o.id = :id";
     $order = $this->db->queryOne($sql, [':id' => $id], $this->getEntityClass());
-    $order->products = $this->getOrderProducts($order->id);
-    return $order;
+//    return $order;
+    if ($order instanceof DataEntity) {
+      $order->products = $this->getOrderProducts($order->id);
+      return $order;
+    } elseif ($this->getEntityClass() == Order::class) {
+      throw new RepositoryException('Заказ не найден');
+    } else {
+      throw new \Exception();
+    }
   }
   
   public function getAll(): array {
