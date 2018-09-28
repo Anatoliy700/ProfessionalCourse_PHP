@@ -59,7 +59,7 @@ class CartController extends Controller
     $id = $this->request->getParams('id');
     if ($this->request->isPost() && $id) {
       $cartRepository = new CartRepository();
-      $cart = $cartRepository->getOne(1);
+      $cart = $cartRepository->getOne();
       $cart->remove($id);
       $cartRepository->save($cart);
     }
@@ -73,7 +73,7 @@ class CartController extends Controller
     $params = $this->request->getParams();
     if ($this->request->isPost() && isset($params['id'])) {
       $cartRepository = new CartRepository();
-      $cart = $cartRepository->getOne(1);
+      $cart = $cartRepository->getOne();
       $cart->add($params, $type);
       $cartRepository->save($cart);
     }
