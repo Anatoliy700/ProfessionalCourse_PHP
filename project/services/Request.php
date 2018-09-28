@@ -14,7 +14,7 @@ class Request
   private $controllerName;
   private $actionName;
   private $params;
-  private $postParams;
+  private $requestMethod;
   private $requestString;
   
   /**
@@ -22,8 +22,9 @@ class Request
    */
   public function __construct() {
     $this->requestString = $_SERVER['REQUEST_URI'];
+    $this->params = $_REQUEST;
+    $this->requestMethod = $_SERVER['REQUEST_METHOD'];
     $this->parseRequest();
-    $this->getPost();
   }
   
   private function parseRequest() {
@@ -31,13 +32,7 @@ class Request
     if (preg_match_all($pattern, $this->requestString, $matches)) {
       $this->controllerName = $matches['controller'][0];
       $this->actionName = $matches['action'][0];
-      $this->params = $matches['params'][0];
-    }
-  }
-  
-  private function getPost() {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-      $this->postParams = $_POST;
+//      $this->params = $matches['params'][0];
     }
   }
   
@@ -56,17 +51,24 @@ class Request
   }
   
   /**
-   * @return mixed
+   * @param null $name
+   * @return null
    */
-  public function getParams() {
-    parse_str($this->params, $params);
-    return $params;
+  public function getParams($name = null) {
+    if (is_null($name)) {
+      return $this->params;
+    }
+    if (isset($this->params[$name])) {
+      return $this->params[$name];
+    }
+    return null;
   }
   
-  /**
-   * @return mixed
-   */
-  public function getPostParams() {
-    return $this->postParams;
+  public function isPost() {
+    return $this->requestMethod == 'POST';
+  }
+  
+  public function isGet() {
+    return $this->requestMethod == 'GET';
   }
 }
