@@ -12,10 +12,10 @@ class Renderer implements IRenderer
   
   /**
    * Renderer constructor.
-   * @param $renderer
+   * @param $renderer[]
    */
-  public function __construct(IRenderer $renderer) {
-    $this->renderer = $renderer;
+  public function __construct($renderer) {
+    $this->renderer = new $renderer;
   }
   
   public function render($template, $params = [], $layout = true) {
