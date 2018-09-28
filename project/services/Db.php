@@ -3,23 +3,30 @@
 namespace app\services;
 
 
-use app\trains\TSingleton;
-
-
 class Db
 {
-  use TSingleton;
-  
-  private $config = [
-    'driver' => 'mysql',
-    'host' => 'localhost',
-    'login' => 'root',
-    'password' => '',
-    'database' => 'project_php_2',
-    'charset' => 'utf8'
-  ];
+  private $config;
   
   private $conn = null;
+  
+  /**
+   * Db constructor.
+   * @param $driver
+   * @param $host
+   * @param $login
+   * @param $password
+   * @param $database
+   * @param string $charset
+   */
+  public function __construct($driver, $host, $login, $password, $database, $charset = 'utf8') {
+    $this->config['driver'] = $driver;
+    $this->config['host'] = $host;
+    $this->config['login'] = $login;
+    $this->config['password'] = $password;
+    $this->config['database'] = $database;
+    $this->config['charset'] = $charset;
+  }
+  
   
   private function getConnection() {
     if (is_null($this->conn)) {
