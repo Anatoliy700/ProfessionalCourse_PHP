@@ -65,10 +65,10 @@ class Cart extends DataEntity
   }
   
   /**
-   * @param $params
+   * @param $id
    */
-  public function remove($params) {
-    $id = (int)$params['id'];
+  public function remove($id) {
+    $id = (int)$id;
     foreach ($this->products as $key => $item) {
       if ($item['product_id'] === $id) {
         array_splice($this->products, $key, 1);
