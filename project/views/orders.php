@@ -25,7 +25,7 @@
               <form action="/order/delete" method="post">
                 <input type="hidden" name="id" value="<?= $order->id ?>">
                 <button type="submit">Отменить заказ</button>
-                <button style="display: block; margin-top: 10px" formaction="/order/details" type="submit">
+                <button style="display: block; margin-top: 10px" formmethod="get" formaction="/order/details" type="submit">
                   Посмотреть заказ
                 </button>
               </form>
