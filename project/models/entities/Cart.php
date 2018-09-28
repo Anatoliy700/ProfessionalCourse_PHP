@@ -18,15 +18,30 @@ class Cart extends DataEntity
   
   /**
    * Cart constructor.
-   * @param null $data []
+   * @param array $products
+   * @param int $total_price
+   * @param int $total_amount
    */
+  public function __construct(array $products = null, $total_price = null, $total_amount = null) {
+    $this->products = $products;
+    $this->total_price = $total_price;
+    $this->total_amount = $total_amount;
+  }
+  
+  
+  
+  
+  /**
+   * Cart constructor.
+   * @param null $data []
+   *//*
   public function __construct($data = null) {
     if (!empty($data)) {
       $this->products = $data['products'];
       $this->total_price = $data['total_price'];
       $this->total_amount = $data['total_amount'];
     }
-  }
+  }*/
   
   /**
    * @param $params
