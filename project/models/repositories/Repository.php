@@ -4,6 +4,7 @@
 namespace app\models\repositories;
 
 
+use app\base\App;
 use app\models\entities\DataEntity;
 use app\models\entities\Product;
 use app\services\Db;
@@ -16,7 +17,7 @@ abstract class Repository
   protected $db;
   
   public function __construct() {
-    $this->db = Db::getInstance();
+    $this->db = App::call()->db;
   }
   
   abstract protected function getTableName(): string;
@@ -27,6 +28,8 @@ abstract class Repository
   /**
    * @param int $id
    * @return DataEntity
+   * @throws RepositoryException
+   * @throws \Exception
    */
   public function getOne(int $id): DataEntity {
     $tableName = $this->getTableName();
