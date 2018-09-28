@@ -56,11 +56,11 @@ class CartController extends Controller
    *
    */
   public function actionRemove() {
-    $params = $this->request->getPostParams();
-    if (isset($params['id'])) {
+    $id = $this->request->getParams('id');
+    if ($this->request->isPost() && $id) {
       $cartRepository = new CartRepository();
       $cart = $cartRepository->getOne(1);
-      $cart->remove($params);
+      $cart->remove($id);
       $cartRepository->save($cart);
     }
     Redirect::go();
@@ -70,8 +70,8 @@ class CartController extends Controller
    * @param $type
    */
   private function addToCart($type) {
-    $params = $this->request->getPostParams();
-    if (isset($params['id'])) {
+    $params = $this->request->getParams();
+    if ($this->request->isPost() && isset($params['id'])) {
       $cartRepository = new CartRepository();
       $cart = $cartRepository->getOne(1);
       $cart->add($params, $type);
