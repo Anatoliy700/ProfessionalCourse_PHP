@@ -12,6 +12,7 @@ class Session
    * @param $objectName
    */
   public function __construct($objectName) {
+    session_start();
     $this->objectName = $objectName;
   }
   
