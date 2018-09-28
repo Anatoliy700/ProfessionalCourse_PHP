@@ -7,8 +7,6 @@ namespace app\models\repositories;
 use app\base\App;
 use app\models\entities\DataEntity;
 use app\models\entities\Product;
-use app\services\Db;
-use app\services\exception\ControllerException;
 use app\services\exception\RepositoryException;
 
 
