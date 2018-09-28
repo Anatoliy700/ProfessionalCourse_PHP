@@ -26,10 +26,10 @@ class App
       $this->runController();
     } catch (ControllerException $e) {
       echo $this->renderer->render('404', ['message' => $e->getMessage()]);
-    } //catch (\Exception | \Error $e) {
-      //echo $this->renderer->render('404', ['Произошла ошибка']);
+    } catch (\Exception | \Error $e) {
+      echo $this->renderer->render('404', ['message' => 'Произошла ошибка']);
       //отправляем данные ошибки на почту
-    //}
+    }
   }
   
   private function runController() {
