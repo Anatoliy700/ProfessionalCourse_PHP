@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 
+use app\base\App;
 use app\interfaces\IRenderer;
 use app\services\exception\ControllerException;
 use app\services\Request;
@@ -26,6 +27,9 @@ abstract class Controller
     $this->request = $request;
   }
   
+  protected function isAuth() {
+    return App::call()->authorization->isAuth();
+  }
   
   public function run($action = null) {
     $this->action = $action ?: $this->defaultAction;
@@ -33,16 +37,13 @@ abstract class Controller
     if (method_exists($this, $method)) {
       $this->$method();
     } else {
-     throw new ControllerException('Запрашиваемая страница не найдена');
+      throw new ControllerException('Запрашиваемая страница не найдена');
     }
   }
   
   public function render($template, $params = []) {
+    
+    $params['menu'] = $this->isAuth() ? 'auth' : 'noAuth';
     return $this->renderer->render($template, $params, $this->useLayout);
   }
-  
-  
-//  public function renderTemplate($template, $params = []) {
-//    return $this->renderer->render($template, $params);
-//  }
 }
