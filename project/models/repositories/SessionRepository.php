@@ -3,53 +3,24 @@
 namespace app\models\repositories;
 
 
-use app\models\entities\Cart;
+use app\base\App;
 use app\models\entities\DataEntity;
-use app\services\Session;
 
-abstract class SessionRepository extends Repository
+abstract class SessionRepository
 {
   
-  protected $ss;
+  abstract protected function getEntityClass();
   
-  /**
-   * CartRepository constructor.
-   */
-  public function __construct() {
-    $this->ss = new Session($this->getTableName());
+  protected function objectName() {
+    preg_match('#\w+$#iu', $this->getEntityClass(), $matches);
+    return $matches[0] ? strtolower($matches[0]) : null;
   }
   
   public function get() {
-    if ($this->ss->getData()) {
-      return $this->getOne();
-    }
-    return null;
+    return App::call()->session->get($this->objectName()) ?? [];
   }
   
-  /**
-   * @param int|null $id
-   * @return DataEntity
-   */
-  public function getOne(int $id = null): DataEntity {
-    $className = $this->getEntityClass();
-    $reflectionClass = new \ReflectionClass($className);
-    return $reflectionClass->newInstanceArgs($this->ss->getData());
-
-//    return new $className($this->ss->getData());
-  }
-  
-  public function getAll(): array {
-  }
-  
-  public function getSelect($arrId): array {
-  }
-  
-  public function delete(DataEntity $entity) {
-    $this->ss->save(null);
-  }
-  
-  //TODO: сохранять в сессию тока id товара и количество
-  public function save(DataEntity $entity) {
-    $this->ss->save($entity->toArray());
+  public function set(DataEntity $entity = null) {
+    App::call()->session->set($this->objectName(), $entity ? $entity->toArray() : null);
   }
 }
