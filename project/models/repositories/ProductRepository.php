@@ -16,9 +16,9 @@ class ProductRepository extends Repository
     return Product::class;
   }
   
-  public function getProductsPrice(array $idArr){
+  public function getProductsPrice(array $idArr) {
     $placeholder = [];
-    foreach ($idArr as $id){
+    foreach ($idArr as $id) {
       $placeholder[] = '?';
     }
     $placeholder = implode(', ', $placeholder);
