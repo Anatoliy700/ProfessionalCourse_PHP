@@ -17,7 +17,8 @@
           <div class="cart-product-total-price">
             Стоимость: <?= $product['amount'] * $product['details']['price'] ?> руб.
           </div>
-          <input form="cart_<?= $product['product_id'] ?>" formaction="/cart/remove" type="submit" value="Удалить товар">
+          <input form="cart_<?= $product['product_id'] ?>" formaction="/cart/remove" type="submit"
+                 value="Удалить товар">
         </div>
       <?php endforeach; ?>
       <p>Общая стоимость: <?= $cart['totalPrice'] ?> руб.</p>
