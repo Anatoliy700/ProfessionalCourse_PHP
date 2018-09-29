@@ -1,8 +1,8 @@
 <?php
+define('DS', DIRECTORY_SEPARATOR);
 return [
-  'ds' => DIRECTORY_SEPARATOR,
-  'rootDir' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-  'templatesDir' => __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR,
+  'rootDir' => __DIR__ . DS . '..' . DS,
+  'templatesDir' => __DIR__ . DS . '..' . DS . 'views' . DS,
   'defaultController' => 'product',
   'controllersNamespace' => 'app\controllers',
   'components' => [
@@ -18,12 +18,15 @@ return [
     'request' => [
       'class' => \app\services\Request::class
     ],
-    'templateRenderer' => [
-      'class' => \app\services\TemplateRenderer::class
-    ],
     'renderer' => [
       'class' => \app\services\Renderer::class,
       'use' => \app\services\TemplateRenderer::class
+    ],
+    'session' => [
+      'class' => \app\services\Session::class
+    ],
+    'authorization' => [
+      'class' => \app\models\Authorization::class
     ]
   ]
 ];
