@@ -28,12 +28,23 @@ class User extends DataEntity
     $this->first_name = $first_name;
     $this->last_name = $last_name;
     $this->login = $login;
-    $this->password = $password;
+    $this->password = !$password ?: password_hash($password, PASSWORD_DEFAULT);
   }
   
-  
-  public function checkPassword($pass){
+  public function checkPassword($pass) {
     return password_verify($pass, $this->password);
+  }
+  
+  public function getId() {
+    return $this->id;
+  }
+  
+  public function getFullName() {
+    return $this->first_name . ' ' . $this->last_name;
+  }
+  
+  public function getLogin() {
+    return $this->login;
   }
   
   public function toArray(): array {
