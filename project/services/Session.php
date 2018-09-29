@@ -5,30 +5,26 @@ namespace app\services;
 
 class Session
 {
-  private $objectName;
-  
   /**
    * Session constructor.
-   * @param $objectName
    */
-  public function __construct($objectName) {
-    if (!session_id()) {
-      session_start();
-    }
-    $this->objectName = $objectName;
+  public function __construct() {
+    session_start();
   }
   
   /**
-   *
+   * @param $key
+   * @return null
    */
-  public function getData() {
-    return $_SESSION[$this->objectName] ?? [];
+  public function get($key) {
+    return $_SESSION[$key] ?? null;
   }
   
   /**
+   * @param $key
    * @param $data
    */
-  public function save($data) {
-    $_SESSION[$this->objectName] = $data;
+  public function set($key, $data) {
+    $_SESSION[$key] = $data;
   }
 }
