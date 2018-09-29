@@ -1,2 +1,2 @@
 <h1>404</h1>
-<div><?=$message?></div>
+<div><?= $message ?></div>
