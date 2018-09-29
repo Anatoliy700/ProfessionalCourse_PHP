@@ -3,6 +3,7 @@
 namespace app\services;
 
 
+use app\base\App;
 use app\interfaces\IRenderer;
 
 class Renderer implements IRenderer
@@ -12,7 +13,7 @@ class Renderer implements IRenderer
   
   /**
    * Renderer constructor.
-   * @param $renderer[]
+   * @param $renderer []
    */
   public function __construct($renderer) {
     $this->renderer = new $renderer;
@@ -20,8 +21,13 @@ class Renderer implements IRenderer
   
   public function render($template, $params = [], $layout = true) {
     if ($layout) {
+      if (isset($params['menu'])) {
+        $menu = (include App::call()->config['templatesDir'] . 'menu.php')[$params['menu']];
+      } else {
+        $menu = (include App::call()->config['templatesDir'] . 'menu.php')['noAuth'];
+      }
       $content = $this->renderTemplate($template, $params);
-      return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content]);
+      return $this->renderTemplate("layouts/{$this->layout}", ['content' => $content, 'menu' => $menu]);
     }
     return $this->renderTemplate($template, $params);
   }
