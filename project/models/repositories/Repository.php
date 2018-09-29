@@ -43,17 +43,17 @@ abstract class Repository
   }
   
   /**
-   * @return static[]
+   * @return array
    */
-  public function getAll(): array {
+  public function getAll($param = null): array {
     $tableName = $this->getTableName();
     $sql = "SELECT * FROM {$tableName}";
     return $this->db->queryAll($sql, [], $this->getEntityClass());
   }
   
   /**
-   * @param array $arrId
-   * @return static[]
+   * @param $arrId
+   * @return array
    */
   public function getSelect($arrId): array {
     $tableName = $this->getTableName();
@@ -88,7 +88,9 @@ abstract class Repository
     $pdoStatement = $this->db->execute($sql, $params);
     
     if ((int)$pdoStatement->errorCode()) {
-      throw new RepositoryException('Ошибка: ' . $pdoStatement->errorInfo()[2]);
+      throw new RepositoryException('Ошибка: ' . $pdoStatement->errorInfo()[2],
+        $pdoStatement->errorCode(),
+        $entity->getProp('login'));
     } else {
       if ($pdoStatement->rowCount()) {
         //TODO доработать добавление id
