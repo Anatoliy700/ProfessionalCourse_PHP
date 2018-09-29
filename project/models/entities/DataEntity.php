@@ -17,8 +17,8 @@ abstract class DataEntity
   /**
    * @param $id
    */
-  public function setId($id){
-    if((int)$id){
+  public function setId($id) {
+    if ((int)$id) {
       $this->id = $id;
     }
     
@@ -36,5 +36,5 @@ abstract class DataEntity
   /**
    * @return array
    */
-  abstract public function toArray(): array ;
+  abstract public function toArray(): array;
 }
