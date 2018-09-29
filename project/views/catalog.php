@@ -1,4 +1,3 @@
-
 <h2>Товары</h2>
 <div class="wrap-products">
   <?php foreach ($products as $product): ?>
