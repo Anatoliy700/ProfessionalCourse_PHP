@@ -39,7 +39,7 @@ class OrderRepository extends Repository
     }
   }
   
-  public function getAll(): array {
+  public function getAll($param = null): array {
     $tableName = $this->getTableName();
     $sql = "SELECT  o.id,
                     o.user_id,
@@ -47,8 +47,9 @@ class OrderRepository extends Repository
                     o.total_amount,
                     s.name AS status
             FROM {$tableName} AS o
-            LEFT JOIN order_statuses AS s ON s.id = o.status_id";
-    return $this->db->queryAll($sql, [], $this->getEntityClass());
+            LEFT JOIN order_statuses AS s ON s.id = o.status_id
+            WHERE o.user_id = :id";
+    return $this->db->queryAll($sql, [':id' => $param], $this->getEntityClass());
   }
   
   private function getOrderProducts($orderId) {
