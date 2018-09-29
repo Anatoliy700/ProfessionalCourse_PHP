@@ -15,11 +15,10 @@ class UserDbRepository extends Repository
     return User::class;
   }
   
-  public function getOneByLogin($login){
-    if($login){
+  public function getUserByLogin($login) {
+    if ($login) {
       $sql = "SELECT * FROM {$this->getTableName()} WHERE login = :login";
-      $response = $this->db->queryOne($sql, [':login' => $login], $this->getEntityClass());
-      return $response;
+      return $this->db->queryOne($sql, [':login' => $login], $this->getEntityClass());
     }
   }
 }
