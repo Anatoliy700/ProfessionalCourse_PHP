@@ -3,10 +3,11 @@
 namespace app\models\repositories;
 
 
+use app\interfaces\IRepository;
 use app\models\entities\Cart;
 use app\models\entities\DataEntity;
 
-class CartRepository extends SessionRepository
+class CartRepository extends SessionRepository implements IRepository
 {
   
   protected function getTableName(): string {
@@ -28,6 +29,14 @@ class CartRepository extends SessionRepository
     return $reflectionClass->newInstanceArgs($this->get());
 
 //    return new $className($this->ss->getData());
+  }
+  
+  public function getAll($param = null): array {
+    return null;
+  }
+  
+  public function getSelect($arrId): array {
+    return null;
   }
   
   
