@@ -10,7 +10,7 @@ use app\services\Redirect;
 class AuthController extends Controller
 {
   public function actionIndex() {
-    if (App::call()->authorization->isAuth()) {
+    if ($this->isAuth()) {
       Redirect::go('/lk');
     }
     echo $this->render('auth');
