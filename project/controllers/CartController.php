@@ -3,9 +3,8 @@
 namespace app\controllers;
 
 
-use app\models\entities\Cart;
-use app\models\repositories\CartRepository;
-use app\models\repositories\ProductRepository;
+use app\models\Cart;
+use \app\models\entities\Cart as CartEntity;
 use app\services\Redirect;
 
 class CartController extends Controller
@@ -14,31 +13,15 @@ class CartController extends Controller
    *
    */
   public function actionIndex() {
-    $user_id = 1; //получаем id пользователя, он равен id корзины
-    $cart = (new CartRepository())->getOne($user_id);
-    $products_id = $cart->getProductsId();
-    $cartArray = $cart->toArray();
-    if (!empty($products_id)) {
-      $products = (new ProductRepository())->getSelect($products_id);
-      foreach ($cartArray['products'] as &$productsItem) {
-        foreach ($products as $product) {
-          $product = $product->toArray();
-          if ($product['id'] == $productsItem['product_id']) {
-            $productsItem['details'] = $product;
-            $cartArray['totalPrice'] += $productsItem['amount'] * $product['price'];
-            $cartArray['totalAmount'] += $productsItem['amount'];
-          }
-        }
-      }
-    }
-    echo $this->render('cart', ['cart' => count($cartArray['products']) ? $cartArray : null]);
+    $cart = (new Cart())->get();
+    echo $this->render('cart', ['cart' => count($cart['products']) ? $cart : null]);
   }
   
   /**
    *
    */
   public function actionAdd() {
-    $this->addToCart(Cart::ADD);
+    $this->addToCart(CartEntity::ADD);
     Redirect::go();
   }
   
@@ -46,11 +29,9 @@ class CartController extends Controller
    *
    */
   public function actionUpdate() {
-    $this->addToCart(Cart::UPDATE);
+    $this->addToCart(CartEntity::UPDATE);
     Redirect::go();
   }
-  
-  //TODO убрать дублирование, подумать над оптимизацией
   
   /**
    *
@@ -58,10 +39,7 @@ class CartController extends Controller
   public function actionRemove() {
     $id = $this->request->getParams('id');
     if ($this->request->isPost() && $id) {
-      $cartRepository = new CartRepository();
-      $cart = $cartRepository->getOne();
-      $cart->remove($id);
-      $cartRepository->save($cart);
+      (new Cart())->remove($id);
     }
     Redirect::go();
   }
@@ -70,12 +48,17 @@ class CartController extends Controller
    * @param $type
    */
   private function addToCart($type) {
-    $params = $this->request->getParams();
-    if ($this->request->isPost() && isset($params['id'])) {
-      $cartRepository = new CartRepository();
-      $cart = $cartRepository->getOne();
-      $cart->add($params, $type);
-      $cartRepository->save($cart);
+    $params = [
+      'id' => (int)$this->request->getParams('id'),
+      'amount' => (int)$this->request->getParams('amount'),
+      'price' => (int)$this->request->getParams('price')
+    ];
+    if ($this->request->isPost()
+      && $params['id']
+      && $params['amount']
+      && $params['price']
+    ) {
+      (new Cart())->add($params, $type);
     }
   }
 }
