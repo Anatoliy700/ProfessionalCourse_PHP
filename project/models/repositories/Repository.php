@@ -5,12 +5,13 @@ namespace app\models\repositories;
 
 
 use app\base\App;
+use app\interfaces\IRepository;
 use app\models\entities\DataEntity;
 use app\models\entities\Product;
 use app\services\exception\RepositoryException;
 
 
-abstract class Repository
+abstract class Repository implements IRepository
 {
   protected $db;
   
